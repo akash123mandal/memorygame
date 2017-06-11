@@ -14,7 +14,6 @@ body
 	background-color: rgba(255, 255, 255, 0.85);
 	background-image: url('images/containback.jpg');
 	background-blend-mode: lighten;
-	/*background: linear-gradient(-90deg, gray, black, gray);*/
 	font-family: 'hp';
 	letter-spacing: 4px;
 }
@@ -210,7 +209,7 @@ table
 	margin: auto;
 	max-width: 750px;
 	text-align: justify;
-	
+	letter-spacing: 2px;
 	font-family: 'lum';
 	margin-bottom: 10px;
 }
