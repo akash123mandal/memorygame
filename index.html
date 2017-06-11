@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
+	<title>
+		Memory Match
+	</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function() 
+		{
+			function shuffle(arr)
+			{
+				var curr = arr.length, temp, rand;
+				while(0 !== curr)
+				{
+					rand = Math.floor(Math.random()*curr);
+					curr--;
+					temp = arr[curr];
+					arr[curr] = arr[rand];
+					arr[rand] = temp;
+				}
+				return arr;
+			}
+			function randFour()
+			{
+				var arr = [];
+				for(var i = 0; i < 8; i++)
+					arr[i] = String.fromCharCode(65 + Math.floor(Math.random()*26));
+				Array.prototype.push.apply(arr, arr);
+				arr = shuffle(arr);
+				return arr;
+			}
+			var active, clicks, score, letterarray, gamearr, tabback, highscore = 0;
+			function set()
+			{
+				letterarray = randFour();
+				gamearr = [];
+				active = 0; clicks = 0; score = 50;
+				var gametab = "<table>";
+				for(var i = 0; i < 16; i++)
+				{
+					if(i % 4 == 0)
+						gametab += "<tr>";
+					var ch = letterarray.pop();
+					gametab += '<td><div class="flipper"><div class="front"></div><div class="back">' + ch + '</div></div></td>';
+					gamearr.push(ch);
+					if(i % 4 == 3)
+						gametab += "</tr>";
+				}
+				gametab += "</table>";
+				$('#gamebox').html(gametab);
+				$('#gamebox td').addClass('card');
+				$('table').css('background-color', 'rgba(241, 243, 206, 0.8)');
+				updatestatus();
+				$('.card').on('click', flip);
+				tabback = (1+Math.floor(Math.random()*4));
+				$('table').css('background-image', 'url("images/tableback/tableback'+tabback+'.png")');
+				$('.front').css('background-image', 'url("images/cardback/back'+(1+Math.floor(Math.random()*4))+'.png")');
+			}
+
+			set();			
+
+			function updatestatus()
+			{
+				$('#clicks').html(clicks);
+				$('#score').html(score);
+			}
+			
+
+			function updateback()
+			{
+				var rgba = $('table').css('background-color');
+				a = parseFloat(rgba.slice(rgba.lastIndexOf(',') + 1, rgba.indexOf(')')).trim());
+				if(a > 0)
+					rgba = rgba.replace(a, a - 0.1);
+				$('table').css('background-color', rgba);
+			}
+
+
+			function activate(index)
+			{
+				$('.card').eq(index).addClass('active');
+			}
+
+			function deactivate()
+			{
+				$('.active').removeClass('active');
+			}
+
+			function check()
+			{
+				if($('.active').eq(0).text() == $('.active').eq(1).text())
+				{
+					$('.active').addClass('clear').removeClass('active');
+					score+=10;
+					updateback();
+				}
+				else
+				{
+					setTimeout(function(){
+						$('.active').removeClass('active');
+					}, 750);
+					score-=2;
+				}
+			}
+
+			function complete()
+			{
+				var cap = ["The castle of Hogwarts", "Quidditch: Wings on Brooms", "The Tale of the Three Brothers", "Darkness vs Light"]
+				if(score > highscore)
+					highscore = score;
+				$('#scoreinfo').text('Your score: '+ score);
+				$('#highscoreinfo').text('Highscore: '+ highscore);
+				$('#caption').text(cap[tabback-1])
+				$('#finish').show(1000);
+			}
+
+			$('#again').click(function(){
+					set();
+					$('#finish').hide(1000);
+			});
+
+			$('#cancel').click(function(){
+				$('#finish').hide(1000);
+			});
+
+			function flip()
+			{
+				if(!($(this).hasClass('active')) && (!($(this).hasClass('clear'))) && ($('.active').length<2))
+				{
+					activate($('.card').index(this));
+					active++;
+					if(active == 2)
+					{
+						check();
+						active = 0;
+					}
+					clicks++;
+				}
+				else if($(this).hasClass('active'))
+				{
+					deactivate();
+					active = 0;
+					clicks++;
+					score--;
+				}
+				updatestatus();
+				if($('.clear').length == 16)
+					complete();
+			}
+		});
+	</script>
+</head>
+<body>
+	<div id="cont">
+		<div id="container">
+			<div id="header">
+				<h1> Help Neville !</h1>
+			</div>
+			<div id="instruct">
+				<p>Newille is in a fix. Since he is so forgetful, Professor McGonagall has assigned him a task.</p>		<p>He has to match 16 cards, placed face dovn, in pairs, but he can turn atmost 2 at a time.
+				</p>
+				Can you help him?!
+				<br>
+				<br>
+				<p>
+				P.S. To make things interesting, there are 4 cards and 4 different pictures to unlock!
+				</p>
+			</div>
+			<div id="status">
+				<div id="clicklabel">
+					Clicks
+				</div><!--
+			 --><div id="specs">
+					<div id="clicks">
+					</div><!--
+				 --><div id="score">
+					</div>
+				</div><!--
+			 --><div id="scorelabel">
+			 		Score
+				</div>
+			</div>
+			<div id="gamebox">
+			</div>
+			<br>
+			<div id="finish">
+				<div id=caption></div>
+				<div id="info">
+					<div id="scoreinfo"></div><div id="highscoreinfo"></div>
+				</div>
+				<div id="act">
+					<div id="again">Play Again</div><div id="cancel">Cancel</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
