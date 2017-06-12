@@ -97,7 +97,7 @@
 				var rgba = $('table').css('background-color');
 				a = parseFloat(rgba.slice(rgba.lastIndexOf(',') + 1, rgba.indexOf(')')).trim());
 				if(a > 0)
-					rgba = rgba.replace(a, a - 0.1);
+					rgba = rgba.replace(a, a - 1.6/(n*n));
 				$('table').css('background-color', rgba);
 			}
 			function activate(index)
