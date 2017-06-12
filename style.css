@@ -89,6 +89,11 @@ table
 	perspective: 1000px;
 }
 
+.front:hover, .back:hover
+{
+	cursor: url('wand.gif'), auto;
+}
+
 .active .flipper
 {
 	transform: rotateY(180deg);
