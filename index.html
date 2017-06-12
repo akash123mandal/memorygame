@@ -12,6 +12,29 @@
 	<script>
 		$(document).ready(function() 
 		{
+			var n, active, clicks, score, letterarray, gamearr, tabback, highscorenorm = 0, highscorehard = 0;
+			$('#play').click(function()
+			{
+				$('#play').hide(500);
+				$('#start').show(1000);
+			});
+			$('#norm').click(function(){
+				n = 4;
+				play();
+			});
+			$('#hard').click(function(){
+				n = 6;
+				play();
+			});
+			function play()
+			{
+				$('#start').hide(1000);
+				set();
+				$('#status').show(750);
+				setTimeout(function(){
+						$('table').show(1000);
+					}, 750);
+			}
 			function shuffle(arr)
 			{
 				var curr = arr.length, temp, rand;
@@ -28,49 +51,47 @@
 			function randFour()
 			{
 				var arr = [];
-				for(var i = 0; i < 8; i++)
+				for(var i = 0; i < (n*n)/2; i++)
 					arr[i] = String.fromCharCode(65 + Math.floor(Math.random()*26));
 				Array.prototype.push.apply(arr, arr);
 				arr = shuffle(arr);
 				return arr;
 			}
-			var active, clicks, score, letterarray, gamearr, tabback, highscore = 0;
 			function set()
 			{
 				letterarray = randFour();
 				gamearr = [];
 				active = 0; clicks = 0; score = 50;
-				var gametab = "<table>";
-				for(var i = 0; i < 16; i++)
+				var gametab = "<table style='display:none'>";
+				for(var i = 0; i < n*n; i++)
 				{
-					if(i % 4 == 0)
+					if(i % n == 0)
 						gametab += "<tr>";
 					var ch = letterarray.pop();
 					gametab += '<td><div class="flipper"><div class="front"></div><div class="back">' + ch + '</div></div></td>';
 					gamearr.push(ch);
-					if(i % 4 == 3)
+					if(i % n == n-1)
 						gametab += "</tr>";
 				}
 				gametab += "</table>";
 				$('#gamebox').html(gametab);
 				$('#gamebox td').addClass('card');
 				$('table').css('background-color', 'rgba(241, 243, 206, 0.8)');
-				updatestatus();
+				var k = 675/(11*n+1);
+				$('.card').css({'width':(10*k) + 'px', 'height':(6*k)+'px', 'font-size':(120/n) + 'px'})
+				$('.front, .back').css({'width':(10*k-10) + 'px', 'height':(6*k-10)+'px', 'line-height': (6*k - 10) + 'px'});
+				$('table').css('border-spacing', k + 'px '+ k + 'px');
 				$('.card').on('click', flip);
 				tabback = (1+Math.floor(Math.random()*4));
 				$('table').css('background-image', 'url("images/tableback/tableback'+tabback+'.png")');
 				$('.front').css('background-image', 'url("images/cardback/back'+(1+Math.floor(Math.random()*4))+'.png")');
-			}
-
-			set();			
-
+				updatestatus();
+			}	
 			function updatestatus()
 			{
 				$('#clicks').html(clicks);
 				$('#score').html(score);
 			}
-			
-
 			function updateback()
 			{
 				var rgba = $('table').css('background-color');
@@ -79,18 +100,14 @@
 					rgba = rgba.replace(a, a - 0.1);
 				$('table').css('background-color', rgba);
 			}
-
-
 			function activate(index)
 			{
 				$('.card').eq(index).addClass('active');
 			}
-
 			function deactivate()
 			{
 				$('.active').removeClass('active');
 			}
-
 			function check()
 			{
 				if($('.active').eq(0).text() == $('.active').eq(1).text())
@@ -107,27 +124,31 @@
 					score-=2;
 				}
 			}
-
 			function complete()
 			{
 				var cap = ["The castle of Hogwarts", "Quidditch: Wings on Brooms", "The Tale of the Three Brothers", "Darkness vs Light"]
-				if(score > highscore)
-					highscore = score;
+				if(n==4)
+					if(score > highscorenorm)
+						highscorenorm = score;
+				if(n==6)
+					if(score > highscorehard)
+						highscorehard = score;
 				$('#scoreinfo').text('Your score: '+ score);
-				$('#highscoreinfo').text('Highscore: '+ highscore);
+				$('#highscoreinfo').html('Highscore(O.V.L.s): ' + highscorenorm + '<br><br>' + 'Highscore(N.E.V.T.s): ' + highscorehard);
 				$('#caption').text(cap[tabback-1])
 				$('#finish').show(1000);
 			}
-
-			$('#again').click(function(){
+			$('#again').click(function()
+			{
 					set();
 					$('#finish').hide(1000);
+					$('#status').hide(1000);
+					$('#play').trigger('click');
 			});
-
-			$('#cancel').click(function(){
+			$('#cancel').click(function()
+			{
 				$('#finish').hide(1000);
 			});
-
 			function flip()
 			{
 				if(!($(this).hasClass('active')) && (!($(this).hasClass('clear'))) && ($('.active').length<2))
@@ -149,7 +170,7 @@
 					score--;
 				}
 				updatestatus();
-				if($('.clear').length == 16)
+				if($('.clear').length == n * n)
 					complete();
 			}
 		});
@@ -170,6 +191,21 @@
 				<p>
 				P.S. To make things interesting, there are 4 cards and 4 different pictures to unlock!
 				</p>
+				<div id="wrap">
+					<div id="play">
+						PLAY!
+					</div>
+				</div>
+			</div>
+			<div id="start">
+				<br>
+				<span style="font-size: 120%">Choose your lewel</span>:<br><br><br>
+				<div id="norm">
+					O.V.L.s (4 x 4)<br><br>
+				</div>
+				<div id="hard">
+					N.E.V.T.s (6 x 6)<br><br>
+				</div>
 			</div>
 			<div id="status">
 				<div id="clicklabel">
