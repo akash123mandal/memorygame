@@ -45,6 +45,7 @@ body
 {
 	display: flex;
 	justify-content: space-around;
+	min-height: 440px;
 }
 
 table, tbody, tr, td
@@ -135,6 +136,7 @@ table
 	border: 5px solid white;
 	background-color: white;
 	color: black;
+	text-shadow: 0 0 10px #7ffff6;
 }
 
 #clicks, #score, #specs, #scorelabel, #clicklabel
@@ -149,6 +151,7 @@ table
 	height: 100px;
 	margin: auto;
 	font-size: 26px;
+	z-index: 3;
 }
 
 #clicklabel
@@ -161,10 +164,32 @@ table
 
 #scorelabel
 {
-	width: 250px;
+	width: 150px;
 	text-align: left;
 	vertical-align: bottom;
+}
+
+#restart
+{
+	display: inline-block;
+	vertical-align: bottom;
 	border-top-right-radius: 15px;
+	padding-right: 20px;
+	padding-left: 30px;
+}
+
+#restart img
+{
+	vertical-align: bottom;
+	width: 40px;
+	padding-bottom: 10px;
+	transition: transform 0.6s;
+}
+
+#restart img:hover
+{
+	transform: scale(1.15);
+	cursor: url('wand.gif'), pointer;
 }
 
 #specs
@@ -198,7 +223,7 @@ table
 	width: 80px;
 }
 
-#clicklabel, #scorelabel, #specs
+#clicklabel, #scorelabel, #specs, #restart
 {
 	background-color: rgba(255, 255, 255, 0.5);
 }
@@ -271,6 +296,7 @@ table
 #play
 {
 	display: inline-block;
+	text-shadow: 0 0 10px #19041c;
 	transition: font-size 0.6s;
 }
 

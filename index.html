@@ -48,7 +48,7 @@
 				}
 				return arr;
 			}
-			function randFour()
+			function rand()
 			{
 				var arr = [];
 				for(var i = 0; i < (n*n)/2; i++)
@@ -59,7 +59,7 @@
 			}
 			function set()
 			{
-				letterarray = randFour();
+				letterarray = rand();
 				gamearr = [];
 				active = 0; clicks = 0; score = 50;
 				var gametab = "<table style='display:none'>";
@@ -82,9 +82,9 @@
 				$('.front, .back').css({'width':(10*k-10) + 'px', 'height':(6*k-10)+'px', 'line-height': (6*k - 10) + 'px'});
 				$('table').css('border-spacing', k + 'px '+ k + 'px');
 				$('.card').on('click', flip);
-				tabback = (1+Math.floor(Math.random()*4));
+				tabback = (1+Math.floor(Math.random()*6));
 				$('table').css('background-image', 'url("images/tableback/tableback'+tabback+'.png")');
-				$('.front').css('background-image', 'url("images/cardback/back'+(1+Math.floor(Math.random()*4))+'.png")');
+				$('.front').css('background-image', 'url("images/cardback/back'+(1+Math.floor(Math.random()*6))+'.png")');
 				updatestatus();
 			}	
 			function updatestatus()
@@ -126,7 +126,7 @@
 			}
 			function complete()
 			{
-				var cap = ["The castle of Hogwarts", "Quidditch: Wings on Brooms", "The Tale of the Three Brothers", "Darkness vs Light"]
+				var cap = ["The castle of Hogwarts", "Quidditch: Wings on Brooms", "The Tale of the Three Brothers", "Darkness vs Light", "Nineteen Years Later", "The Half-blood Prince"]
 				if(n==4)
 					if(score > highscorenorm)
 						highscorenorm = score;
@@ -149,6 +149,9 @@
 			{
 				$('#finish').hide(1000);
 			});
+			$('#restart img').click(function(){
+				play();
+			})
 			function flip()
 			{
 				if(!($(this).hasClass('active')) && (!($(this).hasClass('clear'))) && ($('.active').length<2))
@@ -189,7 +192,7 @@
 				<br>
 				<br>
 				<p>
-				P.S. To make things interesting, there are 4 cards and 4 different pictures to unlock!
+				P.S. To make things interesting, there are 6 cards and 6 different pictures to unlock!
 				</p>
 				<div id="wrap">
 					<div id="play">
@@ -219,6 +222,9 @@
 				</div><!--
 			 --><div id="scorelabel">
 			 		Score
+				</div><!--
+			 --><div id="restart">
+				<img src="restart-icon.png"/>
 				</div>
 			</div>
 			<div id="gamebox">
