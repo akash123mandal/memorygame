@@ -10,14 +10,17 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script>
-		for(var i = 0; i < 6; i++)
-		{
-			new Image().src = 'images/tableback/tableback'+(i+1)+'.png';
-			new Image().src = 'images/cardback/back'+(i+1)+'.png';
-		}
 		$(document).ready(function() 
 		{
-			var n, active, clicks, score, letterarray, gamearr, tabback, highscorenorm = 0, highscorehard = 0;
+			var n, active, clicks, score, letterarray, gamearr, tabback, back, highscorenorm = 0, highscorehard = 0, first = 1;
+			function preload()
+			{	
+				for(var i = 0; i < 6; i++)
+				{
+					new Image().src = 'images/tableback/tableback'+(i+1)+'.png';
+					new Image().src = 'images/cardback/back'+(i+1)+'.png';
+				}
+			}
 			$('#play').click(function()
 			{
 				$('#play').hide(500);
@@ -35,6 +38,7 @@
 			{
 				$('#start').hide(1000);
 				set();
+				first = 0;
 				$('#status').show(750);
 				setTimeout(function(){
 						$('table').show(1000);
@@ -68,6 +72,13 @@
 				gamearr = [];
 				active = 0; clicks = 0; score = 50;
 				var gametab = "<table style='display:none'>";
+				tabback = (1+Math.floor(Math.random()*6));
+				back = (1+Math.floor(Math.random()*6));
+				if(first == 1)
+				{
+					new Image().src = 'images/tableback/tableback'+tabback+'.png';
+					new Image().src = 'images/cardback/back'+back+'.png';
+				}
 				for(var i = 0; i < n*n; i++)
 				{
 					if(i % n == 0)
@@ -87,10 +98,11 @@
 				$('.front, .back').css({'width':(10*k-10) + 'px', 'height':(6*k-10)+'px', 'line-height': (6*k - 10) + 'px'});
 				$('table').css('border-spacing', k + 'px '+ k + 'px');
 				$('.card').on('click', flip);
-				tabback = (1+Math.floor(Math.random()*6));
 				$('table').css('background-image', 'url("images/tableback/tableback'+tabback+'.png")');
-				$('.front').css('background-image', 'url("images/cardback/back'+(1+Math.floor(Math.random()*6))+'.png")');
+				$('.front').css('background-image', 'url("images/cardback/back'+back+'.png")');
 				updatestatus();
+				if(first == 1)
+					preload();
 			}	
 			function updatestatus()
 			{
