@@ -17,7 +17,7 @@
 			{	
 				for(var i = 0; i < 6; i++)
 				{
-					new Image().src = 'images/tableback/tableback'+(i+1)+'.png';
+					new Image().src = 'images/tableback/tableback'+(i+1)+'.jpg';
 					new Image().src = 'images/cardback/back'+(i+1)+'.png';
 				}
 			}
@@ -76,7 +76,7 @@
 				back = (1+Math.floor(Math.random()*6));
 				if(first == 1)
 				{
-					new Image().src = 'images/tableback/tableback'+tabback+'.png';
+					new Image().src = 'images/tableback/tableback'+tabback+'.jpg';
 					new Image().src = 'images/cardback/back'+back+'.png';
 				}
 				for(var i = 0; i < n*n; i++)
@@ -98,7 +98,7 @@
 				$('.front, .back').css({'width':(10*k-10) + 'px', 'height':(6*k-10)+'px', 'line-height': (6*k - 10) + 'px'});
 				$('table').css('border-spacing', k + 'px '+ k + 'px');
 				$('.card').on('click', flip);
-				$('table').css('background-image', 'url("images/tableback/tableback'+tabback+'.png")');
+				$('table').css('background-image', 'url("images/tableback/tableback'+tabback+'.jpg")');
 				$('.front').css('background-image', 'url("images/cardback/back'+back+'.png")');
 				updatestatus();
 				if(first == 1)
