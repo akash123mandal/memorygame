@@ -10,6 +10,11 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script>
+		for(var i = 0; i < 6; i++)
+		{
+			new Image().src = 'images/tableback/tableback'+(i+1)+'.png';
+			new Image().src = 'images/cardback/back'+(i+1)+'.png';
+		}
 		$(document).ready(function() 
 		{
 			var n, active, clicks, score, letterarray, gamearr, tabback, highscorenorm = 0, highscorehard = 0;
@@ -150,8 +155,9 @@
 				$('#finish').hide(1000);
 			});
 			$('#restart img').click(function(){
+				$('#finish').hide();
 				play();
-			})
+			});
 			function flip()
 			{
 				if(!($(this).hasClass('active')) && (!($(this).hasClass('clear'))) && ($('.active').length<2))

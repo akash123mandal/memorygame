@@ -92,6 +92,11 @@ table
 	cursor: url('wand.gif'), pointer;
 }
 
+.clear .front:hover, .clear .back:hover
+{
+	cursor: initial;
+}
+
 .active .flipper
 {
 	transform: rotateY(180deg);
